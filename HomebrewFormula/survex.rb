@@ -30,15 +30,19 @@ class Survex < Formula
   end
 
   def caveats
-    s = nil
-    unless File.exist?("/Applications/Aven.app")
-        s = <<~EOS
-        Aven.app has been installed into #{prefix}. It can be manually linked into
-        the 'Applications' folder by running:
-          ln -sf #{prefix}/Aven.app /Applications/Aven.app
-      EOS
+    begin
+      if File.readlink("/Applications/Aven.app") == "#{prefix}/Aven.app"
+        # Symlink already exists and points to our Aven.app.
+        return nil
+      end
+    rescue SystemCallError
+      # Dangling symlink or not a symlink.
     end
-    s
+    return <<~EOS
+      Aven.app has been installed into #{prefix}. It can be manually linked into
+      the 'Applications' folder by running:
+        ln -sf #{prefix}/Aven.app /Applications/Aven.app
+    EOS
   end
 
   test do
