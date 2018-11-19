@@ -1,14 +1,16 @@
 class Survex < Formula
   desc "Cave Surveying Tool"
   homepage "https://www.survex.com"
-  url "https://survex.com/software/1.2.35/survex-1.2.35.tar.gz"
-  sha256 "91efc72471637efa33fe04b6d154e493ece4c6ce694b1f95e3d6289c0e5c640f"
+  url "https://survex.com/software/1.2.36/survex-1.2.36.tar.gz"
+  sha256 "8781f33daf61c5d22e52400e6130e66a1fec7557cf9aa793d0e26e9b37204ed0"
+  revision 4
 
   depends_on "wxmac"
   depends_on "proj"
   depends_on "ffmpeg"
 
   depends_on "gettext" => :build
+  depends_on "pkg-config" => :build
 
   def install
     system "./configure", "--prefix=#{prefix}",
@@ -23,16 +25,29 @@ class Survex < Formula
     # Create and populate Aven.app
     system "make", "create-aven-app", "APP_PATH=Aven.app"
 
+    ln_s ["#{bin}/aven", "#{bin}/cavern", "#{bin}/extend"], "Aven.app/Contents/MacOS"
+
     prefix.install "Aven.app"
   end
 
   test do
-    Dir.chdir("tests") do
-      ENV["CAVERN"] = "#{bin}/cavern"
-      ENV["DIFFPOS"] = "#{bin}/diffpos"
-      ENV["SURVEXPORT"] = "#{bin}/survexport"
-      ENV["VERBOSE"] = "1"
-      system "./cavern.tst"
-    end
+    (testpath/"test.svx").write <<~EOS
+      *begin test
+      *cs custom "+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs"
+      *cs out custom "+proj=utm +zone=56 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+      *fix 0 150.020166 -33.815585 812
+      0 1 10 - DOWN
+      *end test
+    EOS
+    pos = <<~EOS
+      ( Easting, Northing, Altitude )
+      (224177.87, 6254297.49,   812.00 ) test.0
+      (224177.87, 6254297.49,   802.00 ) test.1
+    EOS
+
+    system "#{bin}/cavern", (testpath/"test.svx")
+    ENV["LC_MESSAGES"] = "C"
+    system "#{bin}/survexport", (testpath/"test.3d"), (testpath/"test.pos")
+    File.open(testpath/"test.pos", "r") { |f| assert_equal f.read, pos }
   end
 end
