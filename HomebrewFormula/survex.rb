@@ -41,7 +41,7 @@ class Survex < Formula
     return <<~EOS
       Aven.app has been installed into #{prefix}. It can be manually linked into
       the 'Applications' folder by running:
-        ln -nsf #{prefix}/Aven.app /Applications/Aven.app
+        ln -nsfF #{prefix}/Aven.app /Applications/Aven.app
     EOS
   end
 
