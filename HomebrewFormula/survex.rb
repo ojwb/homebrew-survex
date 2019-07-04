@@ -1,8 +1,8 @@
 class Survex < Formula
   desc "Cave Surveying Tool"
   homepage "https://www.survex.com"
-  url "https://survex.com/software/1.2.39/survex-1.2.39.tar.gz"
-  sha256 "e43e415e6b2a7c93010fe8d127f42fb2ad821c2c228e66be2e13dc021f742413"
+  url "https://survex.com/software/1.2.40/survex-1.2.40.tar.gz"
+  sha256 "5a54d5903b887c0c5dd9c4f8e509466bfd44368934e2cd3b647f13e4b05047c9"
 
   depends_on "wxmac"
   depends_on "proj"
