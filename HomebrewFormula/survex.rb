@@ -1,9 +1,8 @@
 class Survex < Formula
   desc "Cave Surveying Tool"
   homepage "https://www.survex.com"
-  url "https://survex.com/software/1.2.40/survex-1.2.40.tar.gz"
-  sha256 "5a54d5903b887c0c5dd9c4f8e509466bfd44368934e2cd3b647f13e4b05047c9"
-  revision 2
+  url "https://survex.com/software/1.2.41/survex-1.2.41.tar.gz"
+  sha256 "4df7b47045a2dcdc0974ec19704586b9d1331b2845a2e58eb2f0821f1b3c44c4"
 
   depends_on "wxmac"
   depends_on "proj"
@@ -13,9 +12,6 @@ class Survex < Formula
   depends_on "pkg-config" => :build
 
   def install
-    system "perl", "-pi", "-e",
-                   "s/wxPaintDC dc\\(this\\)/if (MacGetCGContextRef() == NULL) return;\n    $&/",
-                   "src/gfxcore.cc"
     system "./configure", "--prefix=#{prefix}",
                           "--bindir=#{bin}",
                           "--mandir=#{man}",
