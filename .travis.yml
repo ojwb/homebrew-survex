@@ -7,6 +7,8 @@ matrix:
       osx_image: xcode8.3
 before_install:
   - brew update
+  # Hack around Python 2 -> 3 problems.
+  - brew unlink python@2
 script:
   - brew tap survex/survex https://git.survex.com/homebrew-survex
   - brew install survex
