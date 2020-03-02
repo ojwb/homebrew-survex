@@ -1,0 +1,12 @@
+language: cpp
+matrix:
+  include:
+    - os: osx
+    - os: osx
+      # xcode8 is rejected by homebrew as too old
+      osx_image: xcode8.3
+before_install:
+  - brew update
+script:
+  - brew tap survex/survex https://git.survex.com/homebrew-survex
+  - brew install survex
