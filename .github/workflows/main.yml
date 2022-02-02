@@ -24,8 +24,7 @@ jobs:
       - name: Update homebrew
         run: |
           brew update
-          # Hack around Python 2 -> 3 problems.
-          brew unlink python@2
+          brew upgrade
 
       - name: Test installing survex homebrew package
         run: |
