@@ -3,8 +3,9 @@ class Survex < Formula
   homepage "https://www.survex.com"
   url "https://survex.com/software/1.4.1/survex-1.4.1.tar.gz"
   sha256 "ebd5f58c68c14d0210ce40f5993653cc4f0bfc65e79dfe52239da5ede2222f3e"
+  revision 2
 
-  depends_on "wxmac"
+  depends_on "wxwidgets"
   depends_on "proj"
   depends_on "ffmpeg"
 
