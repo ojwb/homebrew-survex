@@ -6,7 +6,7 @@ class Survex < Formula
 
   depends_on "wxwidgets"
   depends_on "proj"
-  depends_on "ffmpeg"
+  depends_on "ffmpeg" => :recommended
 
   depends_on "gettext" => :build
   depends_on "pkg-config" => :build
