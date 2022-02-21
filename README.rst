@@ -13,4 +13,4 @@ Then to install Survex::
   
 FFmpeg is used to implement Aven's movie export feature hence it is marked as recommended dependency and installed by default. To disable this feature you can avoid FFmpeg installation by adding --without-ffmpeg parameter::
 
-  brew install surver --without-ffmpeg
+  brew install survex --without-ffmpeg
