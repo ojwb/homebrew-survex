@@ -3,6 +3,7 @@ class Survex < Formula
   homepage "https://www.survex.com"
   url "https://survex.com/software/1.4.2/survex-1.4.2.tar.gz"
   sha256 "f3a584bcaccd02fde2ca1dbb575530431dc957989da224f35f8d1adec7418f1a"
+  head "https://git.survex.com/survex", :using => :git
 
   depends_on "wxwidgets"
   depends_on "proj"
@@ -11,7 +12,21 @@ class Survex < Formula
   depends_on "gettext" => :build
   depends_on "pkg-config" => :build
 
+  head do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "netpbm" => :build
+    depends_on "gnu-tar" => :build
+  end
+
   def install
+    if build.head?
+      system "autoreconf", "-fiv"
+      system "git", "checkout", "INSTALL"
+      system "curl https://survex.com/software/1.4.2/survex-1.4.2.tar.gz | gtar --strip-components=1 --skip-old-files -zxf -" 
+      system "touch lib/unifont.pixelfont lib/preload_font.h; touch doc/*.1 doc/manual.txt doc/manual.pdf doc/manual/stampfile"
+    end
+
     system "./configure", "--prefix=#{prefix}",
                           "--bindir=#{bin}",
                           "--mandir=#{man}",
