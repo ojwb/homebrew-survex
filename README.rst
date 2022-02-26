@@ -10,7 +10,10 @@ To tap this repository::
 Then to install Survex::
 
   brew install survex
-  
-FFmpeg is used to implement Aven's movie export feature hence it is marked as recommended dependency and installed by default. To disable this feature you can avoid FFmpeg installation by adding --without-ffmpeg parameter::
+
+FFmpeg is used to implement Aven's movie export feature - this homebrew package
+marks it as a recommended dependency so it will be installed and used by default.
+If you don't use this feature you can avoid the FFmpeg dependency by adding the
+`--without-ffmpeg` option::
 
   brew install survex --without-ffmpeg
