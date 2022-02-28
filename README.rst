@@ -22,4 +22,5 @@ If you want to install the latest development version use::
 
   sudo cpan -T -i local::lib < /dev/null
   sudo cpan -I -T -i Locale::PO < /dev/null
+  brew install inkscape
   brew install --HEAD

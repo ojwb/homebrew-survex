@@ -16,15 +16,16 @@ class Survex < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "netpbm" => :build
-    depends_on "gnu-tar" => :build
+    depends_on "w3m" => :build
   end
 
   def install
     if build.head?
+      ENV.prepend_path "PATH", "/opt/homebrew/bin"
+      system "cat /dev/null > doc/Makefile.am"
       system "autoreconf", "-fiv"
       system "git", "checkout", "INSTALL"
-      system "curl https://survex.com/software/1.4.2/survex-1.4.2.tar.gz | gtar --strip-components=1 --skip-old-files -zxf -" 
-      system "touch lib/unifont.pixelfont lib/preload_font.h; touch doc/*.1 doc/manual.txt doc/manual.pdf doc/manual/stampfile"
+      system "curl https://unifoundry.com/pub/unifont/unifont-14.0.01/font-builds/unifont-14.0.01.hex.gz | gzip -d > lib/unifont.hex"
     end
 
     system "./configure", "--prefix=#{prefix}",
@@ -32,6 +33,10 @@ class Survex < Formula
                           "--mandir=#{man}",
                           "--docdir=#{doc}",
                           "--datadir=#{share}"
+
+    if build.head?
+      system "cd lib/icons ; make Aven.iconset.zip"
+    end
 
     system "make"
     system "make", "install"
