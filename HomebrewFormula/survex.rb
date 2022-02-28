@@ -21,7 +21,6 @@ class Survex < Formula
 
   def install
     if build.head?
-      ENV.prepend_path "PATH", "/opt/homebrew/bin"
       system "cat /dev/null > doc/Makefile.am"
       system "autoreconf", "-fiv"
       system "git", "checkout", "INSTALL"
@@ -35,6 +34,7 @@ class Survex < Formula
                           "--datadir=#{share}"
 
     if build.head?
+      ENV.prepend_path "PATH", "/opt/homebrew/bin"
       system "cd lib/icons ; make Aven.iconset.zip"
     end
 
