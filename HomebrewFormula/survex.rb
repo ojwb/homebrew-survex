@@ -3,7 +3,7 @@ class Survex < Formula
   homepage "https://www.survex.com"
   url "https://survex.com/software/1.4.2/survex-1.4.2.tar.gz"
   sha256 "f3a584bcaccd02fde2ca1dbb575530431dc957989da224f35f8d1adec7418f1a"
-  revision 2
+  revision 3
 
   depends_on "wxwidgets"
   depends_on "proj"
@@ -12,7 +12,7 @@ class Survex < Formula
   depends_on "gettext" => :build
   depends_on "pkg-config" => :build
 
-  option "with-debug-hacks", "Temporary option to help debug Aven startup bug"
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",
@@ -20,10 +20,6 @@ class Survex < Formula
                           "--mandir=#{man}",
                           "--docdir=#{doc}",
                           "--datadir=#{share}"
-
-    if build.with? "debug-hacks"
-      patch :DATA
-    end
 
     system "make"
     system "make", "install"
@@ -76,7 +72,7 @@ end
 
 __END__
 diff --git a/src/mainfrm.cc b/src/mainfrm.cc
-index 51dd39b2..727684da 100644
+index 51dd39b2..3b1d1db4 100644
 --- a/src/mainfrm.cc
 +++ b/src/mainfrm.cc
 @@ -737,6 +737,9 @@ MainFrm::MainFrm(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -98,16 +94,15 @@ index 51dd39b2..727684da 100644
  #endif
      CreateMenuBar();
      MakeToolBar();
-@@ -769,6 +772,8 @@ MainFrm::MainFrm(const wxString& title, const wxPoint& pos, const wxSize& size)
+@@ -769,6 +772,7 @@ MainFrm::MainFrm(const wxString& title, const wxPoint& pos, const wxSize& size)
  #if wxUSE_DRAG_AND_DROP
      SetDropTarget(new DnDFile(this));
  #endif
-+    printf("Main window constructed\n");
-+
++    if (hacks) printf("Main window constructed\n");
  }
  
  void MainFrm::CreateMenuBar()
-@@ -1012,15 +1017,20 @@ void MainFrm::MakeToolBar()
+@@ -1012,15 +1016,20 @@ void MainFrm::MakeToolBar()
      // Make the toolbar.
  
  #ifdef USING_GENERIC_TOOLBAR
@@ -137,7 +132,7 @@ index 51dd39b2..727684da 100644
  #else
      wxToolBar* toolbar = wxFrame::CreateToolBar();
  #endif
-@@ -1078,8 +1088,10 @@ void MainFrm::CreateSidePanel()
+@@ -1078,8 +1087,10 @@ void MainFrm::CreateSidePanel()
      // This OS-X-specific code is only needed to stop the toolbar icons getting
      // scaled up, which just makes them look nasty and fuzzy.  Once we have
      // larger versions of the icons, we can drop this code.
@@ -150,7 +145,7 @@ index 51dd39b2..727684da 100644
  #endif
  
      m_Notebook = new wxNotebook(m_Splitter, 400, wxDefaultPosition,
-@@ -1125,6 +1137,7 @@ void MainFrm::CreateSidePanel()
+@@ -1125,6 +1136,7 @@ void MainFrm::CreateSidePanel()
      m_Notebook->AddPage(prespanel, wmsg(/*Presentation*/377), false, 1);
  
      m_Splitter->Initialize(m_Gfx);
@@ -158,15 +153,15 @@ index 51dd39b2..727684da 100644
  }
  
  bool MainFrm::LoadData(const wxString& file, const wxString& prefix)
-@@ -2184,6 +2197,7 @@ void MainFrm::OnFind(wxCommandEvent&)
+@@ -2184,6 +2196,7 @@ void MainFrm::OnFind(wxCommandEvent&)
  
  void MainFrm::OnIdle(wxIdleEvent&)
  {
-+    printf("OnIdle\n");
++    if (hacks) printf("OnIdle\n");
      if (pending_find) {
  	DoFind();
      }
-@@ -2396,7 +2410,7 @@ void MainFrm::ViewFullScreen() {
+@@ -2396,7 +2409,7 @@ void MainFrm::ViewFullScreen() {
  	GetStatusBar()->Show();
  	GetToolBar()->Show();
  #ifdef USING_GENERIC_TOOLBAR
