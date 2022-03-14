@@ -35,8 +35,8 @@ jobs:
           brew tap survex/survex https://git.survex.com/homebrew-survex
           case "${{ matrix.opts }}" in
             (*--HEAD*)
-              sudo cpan -T -i local::lib < /dev/null
-              sudo cpan -I -T -i Locale::PO < /dev/null
+              cpan -T -i local::lib < /dev/null
+              cpan -I -T -i Locale::PO < /dev/null
               brew install inkscape
               ;;
           esac

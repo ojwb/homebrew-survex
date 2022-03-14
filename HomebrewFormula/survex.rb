@@ -39,13 +39,12 @@ class Survex < Formula
                           "--datadir=#{share}"
 
     if build.head?
-      system "ls -l /opt/homebrew/bin/inkscape /usr/local/bin/inkscape || true"
-      system "/opt/homebrew/bin/inkscape --version || true"
-      system "/usr/local/bin/inkscape --version || true"
-      puts ENV['PATH']
-      ENV.prepend_path "PATH", "/opt/homebrew/bin"
+      # Homebrew installs by default in /opt/homebrew on M1 macs and in
+      # /usr/local on intel so put both on PATH with /opt/homebrew/bin
+      # first so on an M1 mac we use the native version in preference to
+      # running the x86 version via emulation.
       ENV.prepend_path "PATH", "/usr/local/bin"
-      puts ENV['PATH']
+      ENV.prepend_path "PATH", "/opt/homebrew/bin"
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
     end
 
