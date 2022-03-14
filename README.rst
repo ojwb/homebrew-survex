@@ -7,7 +7,7 @@ To tap this repository::
 
   brew tap survex/survex https://git.survex.com/homebrew-survex
 
-Then to install Survex::
+Then to install the latest stable version of Survex::
 
   brew install survex
 
@@ -17,3 +17,10 @@ If you don't use this feature you can avoid the FFmpeg dependency by adding the
 `--without-ffmpeg` option::
 
   brew install survex --without-ffmpeg
+
+If you want to install the latest development version use::
+
+  sudo cpan -T -i local::lib < /dev/null
+  sudo cpan -I -T -i Locale::PO < /dev/null
+  brew install inkscape
+  brew install --HEAD

@@ -4,6 +4,7 @@ class Survex < Formula
   url "https://survex.com/software/1.4.2/survex-1.4.2.tar.gz"
   sha256 "f3a584bcaccd02fde2ca1dbb575530431dc957989da224f35f8d1adec7418f1a"
   revision 6
+  head "https://git.survex.com/survex", :using => :git
 
   depends_on "wxwidgets"
   depends_on "proj"
@@ -12,14 +13,35 @@ class Survex < Formula
   depends_on "gettext" => :build
   depends_on "pkg-config" => :build
 
-  patch :DATA
+  stable do
+    patch :DATA
+  end
+
+  head do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "netpbm" => :build
+    depends_on "w3m" => :build
+  end
 
   def install
+    if build.head?
+      system "cat /dev/null > doc/Makefile.am"
+      system "autoreconf", "-fiv"
+      system "git", "checkout", "INSTALL"
+      system "curl https://unifoundry.com/pub/unifont/unifont-14.0.01/font-builds/unifont-14.0.01.hex.gz | gzip -d > lib/unifont.hex"
+    end
+
     system "./configure", "--prefix=#{prefix}",
                           "--bindir=#{bin}",
                           "--mandir=#{man}",
                           "--docdir=#{doc}",
                           "--datadir=#{share}"
+
+    if build.head?
+      ENV.prepend_path "PATH", "/opt/homebrew/bin"
+      system "cd lib/icons ; make Aven.iconset.zip"
+    end
 
     system "make"
     system "make", "install"
