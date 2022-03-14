@@ -39,8 +39,14 @@ class Survex < Formula
                           "--datadir=#{share}"
 
     if build.head?
+      system "ls -l /opt/homebrew/bin/inkscape /usr/local/bin/inkscape || true"
+      system "/opt/homebrew/bin/inkscape --version || true"
+      system "/usr/local/bin/inkscape --version || true"
+      puts ENV['PATH']
       ENV.prepend_path "PATH", "/opt/homebrew/bin"
-      system "cd lib/icons ; make Aven.iconset.zip"
+      ENV.prepend_path "PATH", "/usr/local/bin"
+      puts ENV['PATH']
+      system "make", "-C", "lib/icons", "Aven.iconset.zip"
     end
 
     system "make"
