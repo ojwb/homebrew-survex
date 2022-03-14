@@ -46,7 +46,7 @@ class Survex < Formula
       ENV.prepend_path "PATH", "/usr/local/bin"
       ENV.prepend_path "PATH", "/opt/homebrew/bin"
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
-      system 'eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib); make'
+      system 'eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)"; make'
     else
       system "make"
     end
