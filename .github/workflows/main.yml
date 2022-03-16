@@ -17,8 +17,8 @@ jobs:
       # Don't cancel other jobs if one fails.
       fail-fast: false
       matrix:
-        os: [macos-latest]
-        opts: ['--HEAD']
+        os: [macos-latest, macos-10.15]
+        opts: ['', '--without-ffmpeg', '--HEAD']
     runs-on: ${{ matrix.os }}
 
     steps:
