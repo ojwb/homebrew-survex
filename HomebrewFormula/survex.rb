@@ -50,7 +50,6 @@ class Survex < Formula
       ENV["PATH"] = saved_path
 
       ENV["PERL5OPT"] = "-I" + ENV["HOME"] + "/perl5/lib/perl5 -Mlocal::lib"
-      system "ls -lR /Users/runner/perl5/lib"
       system "env|sort"
     end
 

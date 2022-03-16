@@ -17,7 +17,7 @@ jobs:
       # Don't cancel other jobs if one fails.
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-10.15]
+        os: [macos-latest]
         opts: ['--HEAD']
     runs-on: ${{ matrix.os }}
 
@@ -35,9 +35,14 @@ jobs:
         run: |
           brew uninstall perl
           cpan -I -T -i Locale::PO < /dev/null
+          ls -lR /Users/runner/perl5/lib
+          PERL5OPT=-I$HOME/perl5/lib/perl5 perl -E 'say $_ for @INC'
+          PERL5OPT=-I$HOME/perl5/lib/perl5 perl -E 'use local::lib; say "use local::lib OK"'
+          PERL5OPT=-I$HOME/perl5/lib/perl5\ -Mlocal::lib perl -E 'say "-Mlocal::lib OK"'
           brew install inkscape
 
       - name: Test installing survex homebrew package
         run: |
+          env|sort
           brew tap survex/survex https://git.survex.com/homebrew-survex
-          brew install survex ${{ matrix.opts }}
+          brew install --verbose survex ${{ matrix.opts }}
