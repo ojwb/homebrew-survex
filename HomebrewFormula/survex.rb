@@ -48,6 +48,8 @@ class Survex < Formula
       ENV.prepend_path "PATH", "/opt/homebrew/bin"
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
       ENV["PATH"] = saved_path
+
+      cpan -T -i Locale::PO < /dev/null
     end
 
     system "make"

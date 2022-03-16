@@ -34,7 +34,6 @@ jobs:
         if: contains(${{ matrix.opts }}, '--HEAD')
         run: |
           brew uninstall perl
-          sudo cpan -T -i Locale::PO < /dev/null
           brew install inkscape
 
       - name: Test installing survex homebrew package
