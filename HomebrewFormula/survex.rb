@@ -49,7 +49,7 @@ class Survex < Formula
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
       ENV["PATH"] = saved_path
 
-      cpan -T -i Locale::PO < /dev/null
+      system "cpan -T -i Locale::PO < /dev/null"
     end
 
     system "make"
