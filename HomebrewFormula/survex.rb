@@ -48,9 +48,6 @@ class Survex < Formula
       ENV.prepend_path "PATH", "/opt/homebrew/bin"
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
       ENV["PATH"] = saved_path
-
-      ENV["PERL5OPT"] = "-I" + ENV["HOME"] + "/perl5/lib/perl5 -Mlocal::lib"
-      system "env|sort"
     end
 
     system "make"

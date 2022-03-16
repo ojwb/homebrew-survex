@@ -34,15 +34,10 @@ jobs:
         if: contains(${{ matrix.opts }}, '--HEAD')
         run: |
           brew uninstall perl
-          cpan -I -T -i Locale::PO < /dev/null
-          ls -lR /Users/runner/perl5/lib
-          PERL5OPT=-I$HOME/perl5/lib/perl5 perl -E 'say $_ for @INC'
-          PERL5OPT=-I$HOME/perl5/lib/perl5 perl -E 'use local::lib; say "use local::lib OK"'
-          PERL5OPT=-I$HOME/perl5/lib/perl5\ -Mlocal::lib perl -E 'say "-Mlocal::lib OK"'
+          sudo cpan -T -i Locale::PO < /dev/null
           brew install inkscape
 
       - name: Test installing survex homebrew package
         run: |
-          env|sort
           brew tap survex/survex https://git.survex.com/homebrew-survex
-          brew install --verbose survex ${{ matrix.opts }}
+          brew install survex ${{ matrix.opts }}
