@@ -27,6 +27,7 @@ jobs:
 
       - name: Update homebrew
         run: |
+          brew uninstall perl
           brew update
           brew upgrade
 
