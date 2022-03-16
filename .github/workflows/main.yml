@@ -27,18 +27,17 @@ jobs:
 
       - name: Update homebrew
         run: |
-          brew uninstall perl
           brew update
           brew upgrade
+
+      - name: Install extra dependencies for --HEAD
+        if: contains(${{ matrix.opts }}, '--HEAD')
+        run: |
+          brew uninstall perl
+          cpan -I -T -i Locale::PO < /dev/null
+          brew install inkscape
 
       - name: Test installing survex homebrew package
         run: |
           brew tap survex/survex https://git.survex.com/homebrew-survex
-          case "${{ matrix.opts }}" in
-            (*--HEAD*)
-              cpan -T -i local::lib < /dev/null
-              cpan -I -T -i Locale::PO < /dev/null
-              brew install inkscape
-              ;;
-          esac
           brew install survex ${{ matrix.opts }}
