@@ -49,7 +49,11 @@ class Survex < Formula
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
       ENV["PATH"] = saved_path
 
+      # Install Locale::PO under the temporary directory which homebrew
+      # creates and sets $HOME to, and point Perl to look for modules
+      # there.
       system "cpan -T -i Locale::PO < /dev/null"
+      ENV["PERL5OPT"] = "-I" + ENV["HOME"] + "/perl5/lib/perl5"
     end
 
     system "make"
