@@ -1,9 +1,8 @@
 class Survex < Formula
   desc "Cave Surveying Tool"
   homepage "https://www.survex.com"
-  url "https://survex.com/software/1.4.2/survex-1.4.2.tar.gz"
-  sha256 "f3a584bcaccd02fde2ca1dbb575530431dc957989da224f35f8d1adec7418f1a"
-  revision 6
+  url "https://survex.com/software/1.4.3/survex-1.4.3.tar.gz"
+  sha256 "ecdb464def713513c4bc6f5f4367c2ea1b502c43077ea1a604cd9ece18baa0d3"
   head "https://git.survex.com/survex", :using => :git
 
   depends_on "wxwidgets"
@@ -104,82 +103,3 @@ class Survex < Formula
     File.open(testpath/"test.pos", "r") { |f| assert_equal f.read, pos }
   end
 end
-
-__END__
-diff --git a/src/gfxcore.cc b/src/gfxcore.cc
-index 8d652969..f542bb2f 100644
---- a/src/gfxcore.cc
-+++ b/src/gfxcore.cc
-@@ -557,8 +557,17 @@ void GfxCore::OnPaint(wxPaintEvent&)
- 
- 	FinishDrawing();
-     } else {
-+#ifdef __WXMAC__
-+	if (!m_DoneFirstShow) {
-+	    FirstShow();
-+	}
-+	StartDrawing();
-+	ClearNative();
-+	FinishDrawing();
-+#else
- 	dc.SetBackground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME));
- 	dc.Clear();
-+#endif
-     }
- }
- 
-diff --git a/src/gla-gl.cc b/src/gla-gl.cc
-index 643a1ab8..86c06936 100644
---- a/src/gla-gl.cc
-+++ b/src/gla-gl.cc
-@@ -619,6 +619,22 @@ void GLACanvas::Clear()
-     CHECK_GL_ERROR("Clear", "glClear");
- }
- 
-+void GLACanvas::ClearNative()
-+{
-+    // Clear the canvas to the native background colour.
-+
-+    wxColour background_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME);
-+    glClearColor(background_colour.Red() / 255.,
-+		 background_colour.Green() / 255.,
-+		 background_colour.Blue() / 255.,
-+		 1.0);
-+    CHECK_GL_ERROR("ClearNative", "glClearColor");
-+    glClear(GL_COLOR_BUFFER_BIT);
-+    CHECK_GL_ERROR("ClearNative", "glClear");
-+    glClearColor(0.0, 0.0, 0.0, 1.0);
-+    CHECK_GL_ERROR("ClearNative", "glClearColor (2)");
-+}
-+
- void GLACanvas::SetScale(Double scale)
- {
-     if (scale != m_Scale) {
-diff --git a/src/gla.h b/src/gla.h
-index b5ce1b38..f12cc8b5 100644
---- a/src/gla.h
-+++ b/src/gla.h
-@@ -167,6 +167,7 @@ public:
-     void FirstShow();
- 
-     void Clear();
-+    void ClearNative();
-     void StartDrawing();
-     void FinishDrawing();
- 
-diff --git a/src/mainfrm.cc b/src/mainfrm.cc
-index 51dd39b2..9fefa516 100644
---- a/src/mainfrm.cc
-+++ b/src/mainfrm.cc
-@@ -769,6 +769,11 @@ MainFrm::MainFrm(const wxString& title, const wxPoint& pos, const wxSize& size)
- #if wxUSE_DRAG_AND_DROP
-     SetDropTarget(new DnDFile(this));
- #endif
-+
-+#ifdef __WXMAC__
-+    m_Gfx->ForceRefresh();
-+    m_Gfx->Show(true);
-+#endif
- }
- 
- void MainFrm::CreateMenuBar()
