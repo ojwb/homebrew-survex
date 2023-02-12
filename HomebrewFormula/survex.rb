@@ -1,8 +1,8 @@
 class Survex < Formula
   desc "Cave Surveying Tool"
   homepage "https://www.survex.com"
-  url "https://survex.com/software/1.4.3/survex-1.4.3.tar.gz"
-  sha256 "ecdb464def713513c4bc6f5f4367c2ea1b502c43077ea1a604cd9ece18baa0d3"
+  url "https://survex.com/software/1.4.4/survex-1.4.4.tar.gz"
+  sha256 "d42ba100e9f19e3c1a7bbf74df04b08f3dbebfe1924ff72d4370e13e85c30668"
   head "https://git.survex.com/survex", :using => :git
 
   depends_on "wxwidgets"
