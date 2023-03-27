@@ -18,6 +18,9 @@ If you don't use this feature you can avoid the FFmpeg dependency by adding the
 
   brew install survex --without-ffmpeg
 
+Development version
+-------------------
+
 If you want to install the latest development version use::
 
   brew install inkscape
