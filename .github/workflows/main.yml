@@ -27,8 +27,8 @@ jobs:
 
       - name: Update homebrew
         run: |
-          # Workaround apparent homebrew bug 2023-02-13
-          rm -f /usr/local/bin/2to3-3.11 /usr/local/bin/idle3.11 /usr/local/bin/pydoc3.11 /usr/local/bin/python3.11 /usr/local/bin/python3.11-config
+          # Workaround apparent homebrew bug 2024-02-05
+          rm -f /usr/local/bin/2to3-3.* /usr/local/bin/idle3.* /usr/local/bin/pydoc3.* /usr/local/bin/python3.* /usr/local/bin/python3.*-config
           rm -f /usr/local/bin/2to3 /usr/local/bin/idle3 /usr/local/bin/pydoc3 /usr/local/bin/python3 /usr/local/bin/python3-config
           brew update
           brew upgrade
