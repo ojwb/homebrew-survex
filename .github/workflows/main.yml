@@ -28,6 +28,7 @@ jobs:
           show-progress: false
 
       - name: Update homebrew
+        if: ${{ matrix.os != 'macos-12' }})
         run: |
           # Workaround apparent homebrew bug 2024-02-05
           rm -f /usr/local/bin/2to3-3.* /usr/local/bin/idle3.* /usr/local/bin/pydoc3.* /usr/local/bin/python3.* /usr/local/bin/python3.*-config
