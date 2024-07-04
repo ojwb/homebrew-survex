@@ -28,7 +28,7 @@ class Survex < Formula
       system "cat /dev/null > doc/Makefile.am"
       system "autoreconf", "-fiv"
       system "git", "checkout", "INSTALL"
-      system "curl https://unifoundry.com/pub/unifont/unifont-15.0.01/font-builds/unifont-15.0.01.hex.gz | gzip -d > lib/unifont.hex"
+      system "curl https://unifoundry.com/pub/unifont/unifont-15.1.01/font-builds/unifont-15.1.01.hex.gz | gzip -d > lib/unifont.hex"
     end
 
     system "./configure", "--prefix=#{prefix}",
