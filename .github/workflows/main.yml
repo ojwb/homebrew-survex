@@ -33,7 +33,7 @@ jobs:
           brew upgrade
 
       - name: Install extra dependencies for --HEAD
-        if: contains('--HEAD', ${{ matrix.opts }})
+        if: ${{ contains('--HEAD', matrix.opts ) }}
         run: |
           brew uninstall perl
           brew install inkscape
