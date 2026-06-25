@@ -3,7 +3,7 @@ class Survex < Formula
   homepage "https://www.survex.com"
   url "https://survex.com/software/1.4.22/survex-1.4.22.tar.gz"
   sha256 "a26962d888621cfd2043a7cc6a227fc905130dfbd14c450dc1c4c02fbfdd9dbc"
-  head "https://git.survex.com/survex", :using => :git
+  head "https://git.survex.com/survex", branch: "main", :using => :git
 
   depends_on "wxwidgets"
   depends_on "gdal"
