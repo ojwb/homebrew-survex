@@ -32,7 +32,7 @@ jobs:
           # Remove taps we don't use which spam the logs with warnings, e.g.:
           # Skipping aws/tap because it is not trusted. Run `brew trust aws/tap` to trust it.
           brew untap --force aws/tap azure/bicep || true
-          brew update
+          brew update-if-needed
           brew upgrade
 
       - name: Install extra dependencies for --HEAD
