@@ -41,4 +41,5 @@ jobs:
       - name: Test installing survex homebrew package
         run: |
           brew tap survex/survex https://git.survex.com/homebrew-survex
+          brew trust --formula survex/survex/survex
           brew install survex ${{ matrix.opts }}

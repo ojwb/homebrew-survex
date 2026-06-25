@@ -7,6 +7,10 @@ To tap this repository::
 
   brew tap survex/survex https://git.survex.com/homebrew-survex
 
+Then you need to tell homebrew you trust the ``survex`` formula from this tap::
+
+  brew trust --formula survex/survex/survex
+
 Then to install the latest stable version of Survex::
 
   brew install survex
