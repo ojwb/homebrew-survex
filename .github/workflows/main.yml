@@ -29,6 +29,9 @@ jobs:
 
       - name: Update homebrew
         run: |
+          # Remove taps we don't use which spam the logs with warnings, e.g.:
+          # Skipping aws/tap because it is not trusted. Run `brew trust aws/tap` to trust it.
+          brew untap aws/tap azure/bicep || true
           brew update
           brew upgrade
 
