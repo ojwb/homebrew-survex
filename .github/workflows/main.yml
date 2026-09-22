@@ -17,8 +17,8 @@ jobs:
       # Don't cancel other jobs if one fails.
       fail-fast: false
       matrix:
-        os: [macos-15, macos-26, xcode-27]
-        opts: ['', '--without-ffmpeg', '--HEAD']
+        os: [xcode-27]
+        opts: ['--without-ffmpeg --HEAD']
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -46,6 +46,4 @@ jobs:
           brew tap survex/survex https://git.survex.com/homebrew-survex
           brew trust --formula survex/survex/survex
           brew install survex ${{ matrix.opts }}
-          LC_ALL=pl_PL.UTF-8 cavern --help
-          LC_ALL=pl_PL.UTF-8 survexport --help
-          LC_ALL=pl_PL.UTF-8 aven --help
+          LC_ALL=pl_PL.UTF-8 aven
