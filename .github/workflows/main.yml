@@ -46,6 +46,11 @@ jobs:
           brew tap survex/survex https://git.survex.com/homebrew-survex
           brew trust --formula survex/survex/survex
           brew install survex ${{ matrix.opts }}
+      - name: Run cavern
+        run: |
           echo '*fix 1 reference 0 0 0' > test.svx
           cavern test.svx
+      - name: Run aven
+        run: |
+          sleep 60 ; killall aven &
           LC_ALL=pl_PL.UTF-8 aven test.3d
