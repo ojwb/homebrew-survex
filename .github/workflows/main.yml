@@ -29,24 +29,13 @@ jobs:
 
       - name: Update homebrew
         run: |
-          # Remove taps we don't use which spam the logs with warnings, e.g.:
+          # We want to test something as close to a vanilla homebrew install as we can so
+          # remove some extra taps we don't use.  This also stops them spamming the
+          # logs with warnings, e.g.:
           # Skipping aws/tap because it is not trusted. Run `brew trust aws/tap` to trust it.
           brew untap --force aws/tap azure/bicep || true
           brew update-if-needed
           brew upgrade
-
-      - name: Install extra dependencies for --HEAD
-        if: ${{ contains(matrix.opts, '--HEAD') }}
-        run: |
-          save_PATH=$PATH
-          which perl
-          PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
-          which perl
-          brew uninstall perl
-          PATH=$save_PATH
-          which perl
-          PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
-          which perl
       - name: Test installing survex homebrew package
         run: |
           brew tap survex/survex https://git.survex.com/homebrew-survex

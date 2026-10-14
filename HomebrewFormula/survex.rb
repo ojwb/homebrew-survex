@@ -40,6 +40,13 @@ class Survex < Formula
                           "--datadir=#{share}"
 
     if build.head?
+      # It seems we want to use the system perl here instead of homebrew's
+      # perl, so create a temporary bin directory with a symlink to the
+      # system perl prepend it to PATH.
+      system "mkdir", ENV["HOME"] + "/bin"
+      system "ln", "-s", "/usr/bin/perl", ENV["HOME"] + "/bin"
+      ENV.prepend_path "PATH", ENV["HOME"] + "/bin"
+
       # Homebrew installs by default in /opt/homebrew on M1 macs and in
       # /usr/local on intel so put both on PATH with /opt/homebrew/bin
       # first so on an M1 mac we use the native version in preference to
