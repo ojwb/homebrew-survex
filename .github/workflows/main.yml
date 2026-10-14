@@ -36,6 +36,15 @@ jobs:
           brew untap --force aws/tap azure/bicep || true
           brew update-if-needed
           brew upgrade
+
+      - name: Install extra dependencies for --HEAD
+        if: ${{ contains(matrix.opts, '--HEAD') }}
+        run: |
+          # Listing this as `depends_on "inkscape" => :build` in the formula
+          # (conditional on `head`) seems to be ignored.  We document the user
+          # needs to do this in `README.rst`.
+          brew install inkscape
+
       - name: Test installing survex homebrew package
         run: |
           brew tap survex/survex https://git.survex.com/homebrew-survex
