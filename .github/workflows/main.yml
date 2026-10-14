@@ -40,7 +40,6 @@ jobs:
       - name: Install extra dependencies for --HEAD
         if: ${{ contains(matrix.opts, '--HEAD') }}
         run: |
-          brew uninstall perl
           brew install inkscape
 
       - name: Test installing survex homebrew package

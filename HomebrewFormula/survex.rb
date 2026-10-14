@@ -39,6 +39,15 @@ class Survex < Formula
                           "--datadir=#{share}"
 
     if build.head?
+      system "echo", '$PATH'
+      system "which", "perl"
+      # It seems we want to use the system perl here instead of homebrew's
+      # perl, so create a temporary bin directory with a symlink to the
+      # system perl prepend it to PATH.
+      system "mkdir", ENV["HOME"] + "/bin"
+      system "ln", "-s", "/usr/bin/perl", ENV["HOME"] + "/bin"
+      ENV.prepend_path "PATH", ENV["HOME"] + "/bin"
+
       # Homebrew installs by default in /opt/homebrew on M1 macs and in
       # /usr/local on intel so put both on PATH with /opt/homebrew/bin
       # first so on an M1 mac we use the native version in preference to
@@ -46,17 +55,23 @@ class Survex < Formula
       saved_path = ENV["PATH"]
       ENV.prepend_path "PATH", "/usr/local/bin"
       ENV.prepend_path "PATH", "/opt/homebrew/bin"
+      system "echo", '$PATH'
+      system "which", "perl"
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
       ENV["PATH"] = saved_path
 
       # Install Locale::PO under the temporary directory which homebrew
       # creates and sets $HOME to, and point Perl to look for modules
       # there.
+      system "echo", '$PATH'
+      system "which", "perl"
       system "cpan -T -i Locale::PO < /dev/null"
       ENV["PERL5OPT"] = "-I" + ENV["HOME"] + "/perl5/lib/perl5"
     end
 
     system "make"
+    system "echo", '$PATH'
+    system "which", "perl"
     system "make", "install"
 
     # Create and populate Aven.app
@@ -98,6 +113,8 @@ class Survex < Formula
       (224177.87, 6254297.49,   802.00 ) test.1
     EOS
 
+    system "echo", '$PATH'
+    system "which", "perl"
     system "#{bin}/cavern", (testpath/"test.svx")
     ENV["LC_MESSAGES"] = "C"
     system "#{bin}/survexport", (testpath/"test.3d"), (testpath/"test.pos")
