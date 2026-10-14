@@ -39,7 +39,7 @@ class Survex < Formula
                           "--datadir=#{share}"
 
     if build.head?
-      system "which perl >/tmp/hbsvx.log"
+      system "which perl >>/tmp/hbsvx.log"
       # It seems we want to use the system perl here instead of homebrew's
       # perl, so create a temporary bin directory with a symlink to the
       # system perl prepend it to PATH.
@@ -54,20 +54,20 @@ class Survex < Formula
       saved_path = ENV["PATH"]
       ENV.prepend_path "PATH", "/usr/local/bin"
       ENV.prepend_path "PATH", "/opt/homebrew/bin"
-      system "which perl >/tmp/hbsvx.log"
+      system "which perl >>/tmp/hbsvx.log"
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
       ENV["PATH"] = saved_path
 
       # Install Locale::PO under the temporary directory which homebrew
       # creates and sets $HOME to, and point Perl to look for modules
       # there.
-      system "which perl >/tmp/hbsvx.log"
+      system "which perl >>/tmp/hbsvx.log"
       system "cpan -T -i Locale::PO < /dev/null"
       ENV["PERL5OPT"] = "-I" + ENV["HOME"] + "/perl5/lib/perl5"
     end
 
     system "make"
-    system "which perl >/tmp/hbsvx.log"
+    system "which perl >>/tmp/hbsvx.log"
     system "make", "install"
 
     # Create and populate Aven.app
@@ -109,7 +109,7 @@ class Survex < Formula
       (224177.87, 6254297.49,   802.00 ) test.1
     EOS
 
-    system "which perl >/tmp/hbsvx.log"
+    system "which perl >>/tmp/hbsvx.log"
     system "#{bin}/cavern", (testpath/"test.svx")
     ENV["LC_MESSAGES"] = "C"
     system "#{bin}/survexport", (testpath/"test.3d"), (testpath/"test.pos")
