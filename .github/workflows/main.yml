@@ -40,7 +40,10 @@ jobs:
         run: |
           brew uninstall perl
           brew install inkscape
-
+          which inkscape || true
+          PATH=/opt/homebrew/bin:$PATH
+          which inkscape || true
+          inkscape --version
       - name: Test installing survex homebrew package
         run: |
           brew tap survex/survex https://git.survex.com/homebrew-survex
