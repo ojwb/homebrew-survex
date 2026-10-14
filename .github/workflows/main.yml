@@ -46,3 +46,21 @@ jobs:
           brew tap survex/survex https://git.survex.com/homebrew-survex
           brew trust --formula survex/survex/survex
           brew install survex ${{ matrix.opts }}
+      - name: Run cavern
+        run: |
+          echo '*fix 1 reference 0 0 0' > test.svx
+          cavern test.svx
+      - name: Run aven
+        run: |
+          # Test that aven starts up and is still running after 60 seconds.
+          # Regression test for fix in 1.4.23 - macOS 27 has a locale handling
+          # bug we needed to workaround.
+          killall -l
+          sleep 60 ; killall -SIGUSR1 aven &
+          rc=0
+          env LC_ALL=pl_PL.UTF-8 aven test.3d || rc=$?
+          if [ "$rc" -ne 158 ] ; then
+            echo "aven exited with status $rc"
+            exit 1
+          fi
+          echo 'Test successful: aven was still running after 60s'
