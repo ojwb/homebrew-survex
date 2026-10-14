@@ -47,3 +47,4 @@ jobs:
           brew tap survex/survex https://git.survex.com/homebrew-survex
           brew trust --formula survex/survex/survex
           brew install survex ${{ matrix.opts }}
+          cat /tmp/hbsvx.log
