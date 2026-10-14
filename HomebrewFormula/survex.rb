@@ -20,6 +20,7 @@ class Survex < Formula
   head do
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "inkscape" => :build
     depends_on "netpbm" => :build
     depends_on "w3m" => :build
   end
