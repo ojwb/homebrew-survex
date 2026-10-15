@@ -37,14 +37,8 @@ jobs:
           brew update-if-needed
           brew upgrade
 
-      - name: Install extra dependencies for --HEAD
-        if: ${{ contains(matrix.opts, '--HEAD') }}
-        run: |
-          brew install inkscape
-
       - name: Test installing survex homebrew package
         run: |
           brew tap survex/survex https://git.survex.com/homebrew-survex
           brew trust --formula survex/survex/survex
           brew install survex ${{ matrix.opts }}
-          cat /tmp/hbsvx.log

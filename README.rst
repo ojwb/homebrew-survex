@@ -33,7 +33,6 @@ Development version
 For general use we recommend using the stable version, but if you want to help
 with testing you can install the latest development version with::
 
-  brew install inkscape
   brew install survex --HEAD
 
 (If you already have the stable version installed, you may first need to

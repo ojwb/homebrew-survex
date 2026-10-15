@@ -20,6 +20,7 @@ class Survex < Formula
   head do
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "librsvg" => :build
     depends_on "netpbm" => :build
     depends_on "w3m" => :build
   end
@@ -39,29 +40,16 @@ class Survex < Formula
                           "--datadir=#{share}"
 
     if build.head?
-      # Homebrew installs by default in /opt/homebrew on M1 macs and in
-      # /usr/local on intel so put both on PATH with /opt/homebrew/bin
-      # first so on an M1 mac we use the native version in preference to
-      # running the x86 version via emulation.  Add them to the end so
-      # we don't affect the choice of system tool vs homebrew version
-      # for anything else.
-      saved_path = ENV["PATH"]
-      ENV.append_path "PATH", "/opt/homebrew/bin"
-      ENV.append_path "PATH", "/usr/local/bin"
-      system "which perl >>/tmp/hbsvx.log"
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
-      ENV["PATH"] = saved_path
 
       # Install Locale::PO under the temporary directory which homebrew
       # creates and sets $HOME to, and point Perl to look for modules
       # there.
-      system "which perl >>/tmp/hbsvx.log"
       system "cpan -T -i Locale::PO < /dev/null"
       ENV["PERL5OPT"] = "-I" + ENV["HOME"] + "/perl5/lib/perl5"
     end
 
     system "make"
-    system "which perl >>/tmp/hbsvx.log"
     system "make", "install"
 
     # Create and populate Aven.app
@@ -103,7 +91,6 @@ class Survex < Formula
       (224177.87, 6254297.49,   802.00 ) test.1
     EOS
 
-    system "which perl >>/tmp/hbsvx.log"
     system "#{bin}/cavern", (testpath/"test.svx")
     ENV["LC_MESSAGES"] = "C"
     system "#{bin}/survexport", (testpath/"test.3d"), (testpath/"test.pos")
