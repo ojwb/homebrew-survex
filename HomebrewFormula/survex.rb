@@ -39,21 +39,15 @@ class Survex < Formula
                           "--datadir=#{share}"
 
     if build.head?
-      system "which perl >>/tmp/hbsvx.log"
-      # It seems we want to use the system perl here instead of homebrew's
-      # perl, so create a temporary bin directory with a symlink to the
-      # system perl prepend it to PATH.
-      system "mkdir", ENV["HOME"] + "/bin"
-      system "ln", "-s", "/usr/bin/perl", ENV["HOME"] + "/bin"
-      ENV.prepend_path "PATH", ENV["HOME"] + "/bin"
-
       # Homebrew installs by default in /opt/homebrew on M1 macs and in
       # /usr/local on intel so put both on PATH with /opt/homebrew/bin
       # first so on an M1 mac we use the native version in preference to
-      # running the x86 version via emulation.
+      # running the x86 version via emulation.  Add them to the end so
+      # we don't affect the choice of system tool vs homebrew version
+      # for anything else.
       saved_path = ENV["PATH"]
-      ENV.prepend_path "PATH", "/usr/local/bin"
-      ENV.prepend_path "PATH", "/opt/homebrew/bin"
+      ENV.append_path "PATH", "/opt/homebrew/bin"
+      ENV.append_path "PATH", "/usr/local/bin"
       system "which perl >>/tmp/hbsvx.log"
       system "make", "-C", "lib/icons", "Aven.iconset.zip"
       ENV["PATH"] = saved_path
